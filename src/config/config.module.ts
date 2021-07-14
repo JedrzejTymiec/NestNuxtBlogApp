@@ -9,11 +9,11 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       load: [configuration],
       validationSchema: Joi.object({
-        JWT_SECRET: Joi.string()
-      })
-    })
+        JWT_SECRET: Joi.string(),
+      }),
+    }),
   ],
   providers: [AppConfigService, ConfigService],
-  exports: [AppConfigService, ConfigService]
+  exports: [AppConfigService, ConfigService],
 })
 export class AppConfigModule {}
