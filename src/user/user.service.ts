@@ -34,9 +34,9 @@ export class UserService {
   }
 
   async findById(id): Promise<UserInterface> {
-    return this.userRepo.findOne({
-      where: { id: id },
-      select: ['first_name', 'last_name'],
+    return this.userRepo.findOne(id, {
+      select: ['id', 'first_name', 'last_name'],
+      relations: ['articles'],
     });
   }
 }
