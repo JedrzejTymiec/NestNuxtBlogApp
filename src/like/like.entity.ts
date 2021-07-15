@@ -4,7 +4,7 @@ import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Like {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   like_id: number;
 
   @ManyToOne(() => Article, (article) => article.likes)

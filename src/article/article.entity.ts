@@ -11,7 +11,7 @@ import { Like } from 'src/like/like.entity';
 
 @Entity()
 export class Article {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   article_id: number;
 
   @Column()
