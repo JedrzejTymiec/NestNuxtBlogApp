@@ -17,18 +17,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
-  location: string;
-
-  @Column()
-  department: string;
-
-  @Column()
-  is_admin: boolean;
-
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   register_date: string;
-
-  @Column()
-  age: number;
 }
