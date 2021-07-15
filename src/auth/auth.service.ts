@@ -16,7 +16,6 @@ export class AuthService {
 
   async validateUser({ email, password }): Promise<any> {
     const user = await this.userService.findByEmail(email);
-    console.log(user);
     if (!user) {
       throw new EmailException();
     }
@@ -28,5 +27,9 @@ export class AuthService {
       user: user.id,
     });
     return { token };
+  }
+
+  async getLogged(id) {
+    return this.userService.findById(id);
   }
 }

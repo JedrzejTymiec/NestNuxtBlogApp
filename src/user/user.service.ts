@@ -29,7 +29,14 @@ export class UserService {
   async findByEmail(email): Promise<UserInterface> {
     return this.userRepo.findOne({
       where: { email: email },
-      select: ['password'],
+      select: ['id', 'password'],
+    });
+  }
+
+  async findById(id): Promise<UserInterface> {
+    return this.userRepo.findOne({
+      where: { id: id },
+      select: ['first_name', 'last_name'],
     });
   }
 }
