@@ -24,7 +24,7 @@ export class AuthService {
       throw new PasswordException();
     }
     const token = this.jwtService.sign({
-      user: user.id,
+      user: user.user_id,
     });
     return { token };
   }

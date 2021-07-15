@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -11,11 +11,15 @@ export class UserService {
 
   async findAll(): Promise<UserInterface[]> {
     return this.userRepo.find({
-      select: ['id', 'first_name', 'last_name'],
+      select: ['user_id', 'first_name', 'last_name', 'email'],
     });
   }
 
   async add({ first_name, last_name, email, password }): Promise<any> {
+    const user = await this.findByEmail(email);
+    if (user) {
+      throw new BadRequestException('Email registred')
+    }
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     return this.userRepo.insert({
@@ -29,13 +33,13 @@ export class UserService {
   async findByEmail(email): Promise<UserInterface> {
     return this.userRepo.findOne({
       where: { email: email },
-      select: ['id', 'password'],
+      select: ['user_id', 'password'],
     });
   }
 
   async findById(id): Promise<UserInterface> {
     return this.userRepo.findOne(id, {
-      select: ['id', 'first_name', 'last_name'],
+      select: ['user_id', 'first_name', 'last_name'],
       relations: ['articles'],
     });
   }

@@ -14,7 +14,7 @@ import { Like } from 'src/like/like.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  user_id: number;
 
   @Column()
   first_name: string;
@@ -22,7 +22,7 @@ export class User {
   @Column()
   last_name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
