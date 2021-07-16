@@ -16,4 +16,19 @@ export class ArticleService {
       author: id,
     });
   }
+
+  async getAllDescByDate(): Promise<Article[]> {
+    return this.articleRepo.find({
+      order: {
+        post_date: 'DESC',
+      },
+      relations: ['author', 'comments', 'likes'],
+    });
+  }
+
+  async getById(id): Promise<Article> {
+    return this.articleRepo.findOne(id, {
+      relations: ['author', 'comments', 'likes'],
+    });
+  }
 }

@@ -28,4 +28,7 @@ export class Article {
 
   @OneToMany(() => Like, (like) => like.article)
   likes: Like[];
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  post_date: string;
 }
