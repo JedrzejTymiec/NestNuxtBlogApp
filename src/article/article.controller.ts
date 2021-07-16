@@ -6,7 +6,7 @@ import {
   UseGuards,
   Request,
   Param,
-  Put
+  Put,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleDto } from './dto/article.dto';
@@ -19,10 +19,7 @@ export class ArticleController {
 
   @Post()
   @UseGuards(JwtGuard)
-  async add(
-    @Body() articleDto: ArticleDto, 
-    @Request() req
-  ): Promise<any> {
+  async add(@Body() articleDto: ArticleDto, @Request() req): Promise<any> {
     return this.articleService.create(articleDto, req.user.id);
   }
 
@@ -41,8 +38,8 @@ export class ArticleController {
   async edit(
     @Param('article_id') id: string,
     @Body() articleDto: ArticleDto,
-    @Request() req
+    @Request() req,
   ): Promise<any> {
-    return this.articleService.update(id, articleDto, req.user.id)
+    return this.articleService.update(id, articleDto, req.user.id);
   }
 }
