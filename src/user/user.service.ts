@@ -39,7 +39,7 @@ export class UserService {
   async findById(id): Promise<User> {
     return this.userRepo.findOne(id, {
       select: ['user_id', 'first_name', 'last_name'],
-      relations: ['articles', 'profile'],
+      relations: ['articles', 'profile', 'comments'],
     });
   }
 

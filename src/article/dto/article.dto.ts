@@ -5,4 +5,5 @@ export class ArticleDto {
   readonly title: string;
   @IsNotEmpty()
   readonly body: string;
+  readonly picture: string;
 }
