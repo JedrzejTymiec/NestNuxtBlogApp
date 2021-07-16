@@ -9,5 +9,6 @@ import { ArticleModule } from 'src/article/article.module';
   imports: [TypeOrmModule.forFeature([Comment]), ArticleModule],
   controllers: [CommentController],
   providers: [CommentService],
+  exports: [CommentService],
 })
 export class CommentModule {}

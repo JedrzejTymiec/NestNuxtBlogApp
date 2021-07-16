@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,7 +15,8 @@ import { Connection } from 'typeorm';
 export class ProfileService {
   constructor(
     @InjectRepository(Profile) private profileRepo: Repository<Profile>,
-    private userService: UserService,
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
     private connection: Connection,
   ) {}
 
@@ -40,5 +43,10 @@ export class ProfileService {
       throw new UnauthorizedException();
     }
     return this.profileRepo.update(profileId, data);
+  }
+
+  async deleteById(id): Promise<void> {
+    const profile = await this.profileRepo.findOne(id);
+    await this.profileRepo.remove(profile);
   }
 }

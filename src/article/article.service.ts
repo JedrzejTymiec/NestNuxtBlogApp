@@ -57,4 +57,13 @@ export class ArticleService {
     }
     await this.articleRepo.remove(article);
   }
+
+  async deleteAllByUser(id): Promise<void> {
+    const articles = await this.articleRepo.find({
+      where: {
+        author: id,
+      },
+    });
+    await this.articleRepo.remove(articles);
+  }
 }

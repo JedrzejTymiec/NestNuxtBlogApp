@@ -49,4 +49,13 @@ export class LikeService {
     }
     return this.likeRepo.remove(liked[0]);
   }
+
+  async deleteAllByUser(id): Promise<void> {
+    const likes = await this.likeRepo.find({
+      where: {
+        author: id,
+      },
+    });
+    await this.likeRepo.remove(likes);
+  }
 }

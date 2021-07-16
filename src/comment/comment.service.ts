@@ -70,4 +70,13 @@ export class CommentService {
     }
     await this.commentRepo.remove(comment);
   }
+
+  async deleteAllByUser(id): Promise<void> {
+    const comments = await this.commentRepo.find({
+      where: {
+        author: id,
+      },
+    });
+    await this.commentRepo.remove(comments);
+  }
 }

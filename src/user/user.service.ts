@@ -3,10 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { ArticleService } from 'src/article/article.service';
+import { CommentService } from 'src/comment/comment.service';
+import { LikeService } from 'src/like/like.service';
+import { ProfileService } from 'src/profile/profile.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
+    private articleService: ArticleService,
+    private commentService: CommentService,
+    private likeService: LikeService,
+    private profileService: ProfileService,
+  ) {}
 
   async findAll(): Promise<User[]> {
     return this.userRepo.find({
@@ -61,5 +71,16 @@ export class UserService {
       })
       .splice(0, 2);
     return topWriters;
+  }
+
+  async deleteAll(id): Promise<void> {
+    await this.articleService.deleteAllByUser(id);
+    await this.commentService.deleteAllByUser(id);
+    await this.likeService.deleteAllByUser(id);
+    const user = await this.userRepo.findOne(id);
+    if (user.profile) {
+      await this.profileService.deleteById(user.profile.profile_id);
+    }
+    await this.userRepo.remove(user);
   }
 }

@@ -9,5 +9,6 @@ import { ArticleModule } from 'src/article/article.module';
   imports: [TypeOrmModule.forFeature([Like]), ArticleModule],
   providers: [LikeService],
   controllers: [LikeController],
+  exports: [LikeService],
 })
 export class LikeModule {}
