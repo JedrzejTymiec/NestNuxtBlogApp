@@ -6,6 +6,8 @@ import {
   Body,
   Param,
   Get,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/common/guards/jwt.guard';
 import { Comment } from './comment.entity';
@@ -21,7 +23,7 @@ export class CommentController {
   async create(
     @Body() commentDto: CommentDto,
     @Request() req,
-    @Param('article_id') id,
+    @Param('article_id') id: string,
   ): Promise<any> {
     return this.commentService.add(req.user.id, id, commentDto);
   }
@@ -29,5 +31,21 @@ export class CommentController {
   @Get(':article_id')
   async getArticle(@Param('article_id') id): Promise<Comment[]> {
     return this.commentService.getAllByArticle(id);
+  }
+
+  @Put(':comment_id')
+  @UseGuards(JwtGuard)
+  async update(
+    @Body() commentDto: CommentDto,
+    @Request() req,
+    @Param('comment_id') id: string,
+  ): Promise<any> {
+    return this.commentService.updateById(id, req.user.id, commentDto);
+  }
+
+  @Delete(':comment_id')
+  @UseGuards(JwtGuard)
+  async delete(@Param('comment_id') id: string, @Request() req): Promise<void> {
+    return this.commentService.deleteById(id, req.user.id);
   }
 }

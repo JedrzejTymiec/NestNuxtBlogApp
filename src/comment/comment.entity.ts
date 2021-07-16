@@ -5,7 +5,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 @Entity()
 export class Comment {
   @PrimaryGeneratedColumn('uuid')
-  comment_id: number;
+  comment_id: string;
 
   @Column('text')
   body: string;
@@ -15,4 +15,7 @@ export class Comment {
 
   @ManyToOne(() => User, (user) => user.comments)
   author: User;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  comment_date: string;
 }
