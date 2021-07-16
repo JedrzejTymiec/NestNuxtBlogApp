@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './profile.entity';
 import { Repository } from 'typeorm';
@@ -24,5 +28,17 @@ export class ProfileService {
     await this.connection.manager.save(profile);
     user.profile = profile;
     await this.connection.manager.save(user);
+  }
+
+  async update(profileId, userId, data): Promise<any> {
+    const profile = await this.profileRepo.findOne(profileId);
+    if (!profile) {
+      throw new BadRequestException('Profile not found');
+    }
+    const user = await this.userService.findById(userId);
+    if (!user.profile.profile_id === profileId) {
+      throw new UnauthorizedException();
+    }
+    return this.profileRepo.update(profileId, data);
   }
 }

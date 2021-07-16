@@ -46,4 +46,15 @@ export class ArticleService {
     }
     return this.articleRepo.update(articleId, data);
   }
+
+  async deleteById(articleId, userId): Promise<void> {
+    const article = await this.getById(articleId);
+    if (!article) {
+      throw new BadRequestException('Article not found');
+    }
+    if (article.author.user_id !== userId) {
+      throw new UnauthorizedException();
+    }
+    await this.articleRepo.remove(article);
+  }
 }

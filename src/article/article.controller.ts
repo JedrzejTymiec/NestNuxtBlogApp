@@ -7,6 +7,7 @@ import {
   Request,
   Param,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleDto } from './dto/article.dto';
@@ -41,5 +42,11 @@ export class ArticleController {
     @Request() req,
   ): Promise<any> {
     return this.articleService.update(id, articleDto, req.user.id);
+  }
+
+  @Delete(':article_id')
+  @UseGuards(JwtGuard)
+  async delete(@Param('article_id') id: string, @Request() req): Promise<void> {
+    return this.articleService.deleteById(id, req.user.id);
   }
 }
