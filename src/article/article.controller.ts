@@ -6,6 +6,7 @@ import {
   UseGuards,
   Request,
   Param,
+  Put
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleDto } from './dto/article.dto';
@@ -18,7 +19,10 @@ export class ArticleController {
 
   @Post()
   @UseGuards(JwtGuard)
-  async add(@Body() articleDto: ArticleDto, @Request() req): Promise<any> {
+  async add(
+    @Body() articleDto: ArticleDto, 
+    @Request() req
+  ): Promise<any> {
     return this.articleService.create(articleDto, req.user.id);
   }
 
@@ -27,8 +31,18 @@ export class ArticleController {
     return this.articleService.getAllDescByDate();
   }
 
-  @Get(':post_id')
-  async getOne(@Param('post_id') id: string): Promise<Article> {
+  @Get(':article_id')
+  async getOne(@Param('article_id') id: string): Promise<Article> {
     return this.articleService.getById(id);
+  }
+
+  @Put(':article_id')
+  @UseGuards(JwtGuard)
+  async edit(
+    @Param('article_id') id: string,
+    @Body() articleDto: ArticleDto,
+    @Request() req
+  ): Promise<any> {
+    return this.articleService.update(id, articleDto, req.user.id)
   }
 }

@@ -21,4 +21,9 @@ export class UserController {
   async getWriters(): Promise<User[]> {
     return this.userService.findWithArticles();
   }
+
+  @Get('writers/top')
+  async getTop3(): Promise<User[]> {
+    return this.userService.findTopWriters();
+  }
 }

@@ -50,4 +50,16 @@ export class UserService {
     const writers = users.filter((user) => user.articles.length > 0);
     return writers;
   }
+
+  async findTopWriters(): Promise<User[]> {
+    const writers = await this.findWithArticles();
+    const topWriters = writers
+      .sort((a, b) => {
+        if (a.articles.length > b.articles.length) return -1;
+        if (b.articles.length > a.articles.length) return 1;
+        return 0;
+      })
+      .splice(0, 2);
+    return topWriters;
+  }
 }
