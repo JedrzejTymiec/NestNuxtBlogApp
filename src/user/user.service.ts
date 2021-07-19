@@ -49,7 +49,18 @@ export class UserService {
   async findById(id): Promise<User> {
     return this.userRepo.findOne(id, {
       select: ['user_id', 'first_name', 'last_name'],
-      relations: ['articles', 'profile', 'comments'],
+      join: {
+        alias: 'user',
+        leftJoinAndSelect: {
+          articles: 'user.articles',
+          articleComments: 'articles.comments',
+          articleLikes: 'articles.likes',
+          commentsLikes: 'articleComments.likes',
+          profile: 'user.profile',
+          comments: 'user.comments',
+          likes: 'user.likes',
+        },
+      },
     });
   }
 

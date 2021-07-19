@@ -13,15 +13,27 @@ import { LikeService } from './like.service';
 export class LikeController {
   constructor(private likeService: LikeService) {}
 
-  @Post(':article_id')
+  @Post('article/:article_id')
   @UseGuards(JwtGuard)
-  async create(@Param('article_id') id, @Request() req): Promise<any> {
-    return this.likeService.like(id, req.user.id);
+  async likeArt(@Param('article_id') id, @Request() req): Promise<any> {
+    return this.likeService.likeArticle(id, req.user.id);
   }
 
-  @Delete(':article_id')
+  @Delete('article/:article_id')
   @UseGuards(JwtGuard)
-  async delete(@Param('article_id') id, @Request() req): Promise<any> {
-    return this.likeService.unlike(id, req.user.id);
+  async unlikeArt(@Param('article_id') id, @Request() req): Promise<any> {
+    return this.likeService.unlikeArticle(id, req.user.id);
+  }
+
+  @Post('comment/:comment_id')
+  @UseGuards(JwtGuard)
+  async likeCom(@Param('comment_id') id, @Request() req): Promise<any> {
+    return this.likeService.likeComment(id, req.user.id);
+  }
+
+  @Delete('comment/:comment_id')
+  @UseGuards(JwtGuard)
+  async unlikeCom(@Param('comment_id') id, @Request() req): Promise<any> {
+    return this.likeService.unlikeComment(id, req.user.id);
   }
 }

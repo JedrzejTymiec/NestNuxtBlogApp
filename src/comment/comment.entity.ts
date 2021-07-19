@@ -1,6 +1,13 @@
 import { Article } from 'src/article/article.entity';
 import { User } from 'src/user/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Like } from 'src/like/like.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Comment {
@@ -18,4 +25,7 @@ export class Comment {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   comment_date: string;
+
+  @OneToMany(() => Like, (like) => like.comment)
+  likes: Like[];
 }
