@@ -20,14 +20,14 @@ export class ProfileService {
     private connection: Connection,
   ) {}
 
-  async add(UserId, data): Promise<void> {
-    const user = await this.userService.findById(UserId);
+  async add(userId: string, { about }, avatar?): Promise<void> {
+    const user = await this.userService.findById(userId);
     if (user.profile) {
       throw new BadRequestException('User has profile');
     }
     const profile = new Profile();
-    profile.about = data.about;
-    profile.avatar = data.avatar;
+    profile.about = about;
+    profile.avatar = avatar;
     await this.connection.manager.save(profile);
     user.profile = profile;
     await this.connection.manager.save(user);

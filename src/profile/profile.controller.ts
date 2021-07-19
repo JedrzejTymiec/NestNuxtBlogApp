@@ -6,10 +6,14 @@ import {
   Body,
   Param,
   Put,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtGuard } from 'src/common/guards/jwt.guard';
 import { ProfileDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
+import { Express } from 'express';
 
 @Controller('profile')
 export class ProfileController {
@@ -17,8 +21,17 @@ export class ProfileController {
 
   @Post()
   @UseGuards(JwtGuard)
-  async create(@Request() req, @Body() profileDto: ProfileDto): Promise<void> {
-    return this.profileService.add(req.user.id, profileDto);
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      dest: '../uploads',
+    }),
+  )
+  async create(
+    @Request() req,
+    @Body() profileDto: ProfileDto,
+    @UploadedFile() avatar: Express.Multer.File,
+  ): Promise<void> {
+    return this.profileService.add(req.user.id, profileDto, avatar.path);
   }
 
   @Put(':profile_id')

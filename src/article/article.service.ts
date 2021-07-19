@@ -13,11 +13,12 @@ export class ArticleService {
     @InjectRepository(Article) private articleRepo: Repository<Article>,
   ) {}
 
-  async create({ title, body }, id): Promise<any> {
+  async create(id, { title, body }, picture?): Promise<any> {
     return this.articleRepo.insert({
       title: title,
       body: body,
       author: id,
+      picture: picture,
     });
   }
 

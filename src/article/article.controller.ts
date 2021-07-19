@@ -8,11 +8,14 @@ import {
   Param,
   Put,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleDto } from './dto/article.dto';
 import { JwtGuard } from 'src/common/guards/jwt.guard';
 import { Article } from './article.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('article')
 export class ArticleController {
@@ -20,8 +23,13 @@ export class ArticleController {
 
   @Post()
   @UseGuards(JwtGuard)
-  async add(@Body() articleDto: ArticleDto, @Request() req): Promise<any> {
-    return this.articleService.create(articleDto, req.user.id);
+  @UseInterceptors(FileInterceptor('photo'))
+  async add(
+    @Body() articleDto: ArticleDto,
+    @Request() req,
+    @UploadedFile() pic?: Express.Multer.File,
+  ): Promise<any> {
+    return this.articleService.create(req.user.id, articleDto, pic.path);
   }
 
   @Get()

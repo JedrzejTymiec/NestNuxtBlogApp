@@ -20,6 +20,9 @@ export class Article {
   @Column('text')
   body: string;
 
+  @Column()
+  picture: string;
+
   @ManyToOne(() => User, (user) => user.articles)
   author: User;
 
